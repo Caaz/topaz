@@ -4,7 +4,8 @@ function Topaz(data) {
   if(this.title) document.title = this.title;
   if(!this.ratio) this.ratio = 1;
   if(!this.fps) this.fps = 30;
-  this.height = $(window).height();
+  if(!this.target) this.target = 'body';
+  this.height = $(this.target).height();
   this.width = this.height*this.ratio;
   this.canvas = $('<canvas>');
   this.canvas.attr('width',this.width);
@@ -21,7 +22,7 @@ Topaz.prototype.init = function() {
   $(this.canvas).on({ keydown:function(e){ game.key[e.keyCode] = true; }, keyup:function(e){ game.key[e.keyCode] = false; }, });
   this.id = setInterval(function(){ game.update(); game.draw(); }, this.sleep);
   if(this.start) this.start();
-  $('body').html(this.canvas);
+  $(this.target).html(this.canvas);
 }
 Topaz.prototype.update = function() {
   if(this.main) this.main();

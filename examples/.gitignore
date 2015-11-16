@@ -1,0 +1,3 @@
+*.html
+/examples/*
+!/examples/test.js

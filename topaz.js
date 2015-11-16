@@ -1,4 +1,4 @@
-// Main framework
+// Main framewor
 function Topaz(data) {
   for (var key in data) this[key] = data[key];
   if(this.title) document.title = this.title;
@@ -35,15 +35,15 @@ Topaz.prototype.addMob = function(mob) { this.mobs.push(mob); }
 // Mob!
 function Mob(data) {
   for (var key in data) this[key] = data[key];
-  if(!this.position) this.position = new Point(0,0);
-  if(!this.size) this.size = new Point(0,0);
+  if(!this.position) this.position = new XY(0,0);
+  if(!this.size) this.size = new XY(0,0);
 }
 Mob.prototype.draw = function(cv,unit) {
   if(this.color) cv.fillStyle = this.color;
   else cv.fillStyle = "black";
   cv.fillRect(this.position.x*unit-this.size.x*unit/2,this.position.y*unit-this.size.y*unit/2,this.size.x*unit,this.size.y*unit);
 }
-// Point!
-function Point(x,y) { this.x = x; this.y = y; }
-Point.prototype.getArray = function() { return [this.x,this.y]; }
-Point.prototype.toString = function(){ return "("+this.x+","+this.y+")"; }
+// XY!
+function XY(x,y) { this.x = x; this.y = y; }
+XY.prototype.getArray = function() { return [this.x,this.y]; }
+XY.prototype.toString = function(){ return "("+this.x+","+this.y+")"; }

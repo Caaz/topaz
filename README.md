@@ -7,6 +7,5 @@ This is fairly early in the life of this project, but I doubt it'll become anyth
 ## To-do
 - Get rid of the need for JQuery **possibly**
 - Figure out the viewport and make it better.
-- Name point something else because Point makes no sense for sizes.
 - Do something about proper unit sizing
 - Don't link fps to game logic. Do something about that.

@@ -3,23 +3,26 @@ function Topaz(data) {
   for (var key in data) this[key] = data[key];
   if(this.title) document.title = this.title;
   if(!this.ratio) this.ratio = 1;
-  if(!this.fps) this.fps = 30;
+  if(!this.fps) this.fps = 60;
   if(!this.target) this.target = 'body';
   this.height = $(this.target).height();
-  this.width = this.height*this.ratio;
+  if(this.full) this.width = $(this.target).width();
+  else this.width = this.height*this.ratio;
   this.canvas = $('<canvas>');
   this.canvas.attr('width',this.width);
   this.canvas.attr('height',this.height);
   this.cv = this.canvas[0].getContext('2d');
   this.cv.translate(this.width/2,this.height/2);
   this.cv.globalCompositeOperation = 'source-over';
-  this.cv.imageSmoothingEnabled = false;
-  this.cv.mozImageSmoothingEnabled = false;
-  this.cv.webkitImageSmoothingEnabled = false;
+  if(this.nearestNeighbor) {
+    this.cv.imageSmoothingEnabled = false;
+    this.cv.mozImageSmoothingEnabled = false;
+    this.cv.webkitImageSmoothingEnabled = false;
+  }
   this.mobs = new Array();
   this.key = new Array();
-  this.sleep = 1000/this.fps;
   this.sprites = {};
+  this.sleep = 1000/this.fps;
 }
 Topaz.prototype.init = function() {
   var game = this;
@@ -32,7 +35,7 @@ Topaz.prototype.update = function() {
   if(this.main) this.main();
   var clean = false;
   for(var mob of this.mobs){
-    if(mob.update) mob.update();
+    if(mob.update) mob.update(this);
     if(mob.die) clean = true;
   }
   while(clean) {
@@ -56,6 +59,9 @@ Topaz.prototype.addSprite = function(key,src) {
   img.src = src;
   this.sprites[key] = img;
 }
+Topaz.prototype.unitXYtoPixelXY = function(xy) { return new XY(xy.x*this.height,xy.y*this.height); }
+Topaz.prototype.unittoPixels = function(unit) { return unit*this.height }
+// Topaz.prototype.pixelstoUnits = function(pixels) { return pixels/this.height-.5; }
 // Mob!
 function Mob(data) {
   this.setData(data);

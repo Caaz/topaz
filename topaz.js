@@ -71,8 +71,8 @@ Mob.prototype.draw = function(game) {
   var unit = game.height;
   if(this.color) cv.fillStyle = this.color;
   else cv.fillStyle = "black";
-  if(this.image)
-    cv.drawImage(game.sprites[this.image],this.position.x*unit-this.size.x*unit/2,this.position.y*unit-this.size.y*unit/2,this.size.x*unit,this.size.y*unit);
+  if(this.sprite)
+    cv.drawImage(game.sprites[this.sprite],this.position.x*unit-this.size.x*unit/2,this.position.y*unit-this.size.y*unit/2,this.size.x*unit,this.size.y*unit);
   else
     cv.fillRect(this.position.x*unit-this.size.x*unit/2,this.position.y*unit-this.size.y*unit/2,this.size.x*unit,this.size.y*unit);
 }

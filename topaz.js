@@ -19,6 +19,7 @@ function Topaz(data) {
   this.mobs = new Array();
   this.key = new Array();
   this.sleep = 1000/this.fps;
+  this.sprites = {};
 }
 Topaz.prototype.init = function() {
   var game = this;
@@ -47,9 +48,14 @@ Topaz.prototype.update = function() {
 }
 Topaz.prototype.draw = function() {
   this.cv.clearRect(-this.width/2,-this.height/2,this.width,this.height);
-  for(var i in this.mobs) this.mobs[i].draw(this.cv,this.height);
+  for(var i in this.mobs) this.mobs[i].draw(this);
 }
 Topaz.prototype.addMob = function(mob) { return this.mobs.push(mob) - 1; }
+Topaz.prototype.addSprite = function(key,src) {
+  var img = new Image();
+  img.src = src;
+  this.sprites[key] = img;
+}
 // Mob!
 function Mob(data) {
   this.setData(data);
@@ -58,17 +64,15 @@ function Mob(data) {
 }
 Mob.prototype.setData = function(data) {
   for (var key in data) this[key] = data[key];
-  if(this.image) {
-    this.imageData = new Image();
-    this.imageData.src = this.image;
-  }
-   return this;
+  return this;
 }
-Mob.prototype.draw = function(cv,unit) {
+Mob.prototype.draw = function(game) {
+  var cv = game.cv;
+  var unit = game.height;
   if(this.color) cv.fillStyle = this.color;
   else cv.fillStyle = "black";
   if(this.image)
-    cv.drawImage(this.imageData,this.position.x*unit-this.size.x*unit/2,this.position.y*unit-this.size.y*unit/2,this.size.x*unit,this.size.y*unit);
+    cv.drawImage(game.sprites[this.image],this.position.x*unit-this.size.x*unit/2,this.position.y*unit-this.size.y*unit/2,this.size.x*unit,this.size.y*unit);
   else
     cv.fillRect(this.position.x*unit-this.size.x*unit/2,this.position.y*unit-this.size.y*unit/2,this.size.x*unit,this.size.y*unit);
 }
@@ -76,6 +80,6 @@ Mob.prototype.draw = function(cv,unit) {
 function XY(x,y) { this.x = x; this.y = y; }
 XY.prototype.getArray = function() { return [this.x,this.y]; }
 XY.prototype.toString = function(){ return "("+this.x+","+this.y+")"; }
-XY.prototype.add = function(xy) { this.x += xy.x; this.y += xy.y; }
-XY.prototype.sub = function(xy) { this.x -= xy.x; this.y -= xy.y; }
-XY.prototype.div = function(xy) { this.x = this.x/xy.x; this.y = this.y/xy.y; }
+XY.prototype.add = function(xy) { this.x += xy.x; this.y += xy.y; return this; }
+XY.prototype.sub = function(xy) { this.x -= xy.x; this.y -= xy.y; return this;}
+XY.prototype.div = function(xy) { this.x = this.x/xy.x; this.y = this.y/xy.y; return this; }

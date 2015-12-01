@@ -1,4 +1,6 @@
-// Main framewor
+// Extend the Function!
+Function.prototype.inherits = function(parent) { this.prototype = new parent(); this.prototype.constructor = this; }
+// Main framework
 function Topaz(data) {
   for (var key in data) this[key] = data[key];
   if(this.title) document.title = this.title;
@@ -26,7 +28,11 @@ function Topaz(data) {
 }
 Topaz.prototype.init = function() {
   var game = this;
-  $(document).on({ keydown:function(e){ game.key[e.keyCode] = true; }, keyup:function(e){ game.key[e.keyCode] = false; } });
+  $(document).on({ keydown:function(e){
+    game.key[e.keyCode] = true;
+    if([32, 33, 34, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }}, keyup:function(e){ game.key[e.keyCode] = false; } });
   this.id = setInterval(function(){ game.update(); game.draw(); }, this.sleep);
   if(this.start) this.start();
   $(this.target).html(this.canvas);
